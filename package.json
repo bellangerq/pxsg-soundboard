@@ -1,0 +1,15 @@
+{
+  "name": "pxsg-soundboard",
+  "version": "1.0.0",
+  "description": "Another soundboard for Discord. But this one is the funniest.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Quentin Bellanger",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "node-opus": "^0.3.0"
+  }
+}

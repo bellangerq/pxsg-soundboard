@@ -2,50 +2,44 @@ require('dotenv').config()
 
 const discord = require('discord.js')
 const bot = new discord.Client()
-let isReady = true
-
-/*
 const sounds = [
   {
-    command: 'philippe',
-    file: 'philippe.mp3'
+    name: 'philippe',
+    file: 'philippe'
   },
   {
-    command: 'nanananana',
-    file: 'nanananana.mp3'
-  },
-  ...
+    name: 'nanananana',
+    file: 'nanananana'
+  }
 ]
-*/
 
 bot.login(process.env.DISCORD_TOKEN)
 
 bot.on('message', message => {
-  if (message.content === '!philippe' && isReady) {
-    isReady = false
-    const voiceChannel = message.member.voiceChannel
-    voiceChannel.join()
-    .then(connection => {
-      const dispatcher = connection.playFile('./sounds/philippe.mp3')
-      dispatcher.on('end', end => {
-        voiceChannel.leave()
-      })
-    })
-    isReady = true
+
+  // If sound doesnt exist, quit
+  if (!isSound(message.content)) {
+    console.log(`'${message.content}' command doesnt exist.`)
+    return
   }
+
+  // If sound exists, play it
+  const voiceChannel = message.member.voiceChannel
+  voiceChannel.join()
+  .then(connection => {
+    const dispatcher = connection.playFile(getSoundPath(message.content))
+    dispatcher.on('end', end => {
+      voiceChannel.leave()
+    })
+  })
 })
 
-bot.on('message', message => {
-  if (message.content === '!nanananana' && isReady) {
-    isReady = false
-    const voiceChannel = message.member.voiceChannel
-    voiceChannel.join()
-    .then(connection => {
-      const dispatcher = connection.playFile('./sounds/nanananana.mp3')
-      dispatcher.on('end', end => {
-        voiceChannel.leave()
-      })
-    })
-    isReady = true
-  }
-})
+// Check if the sound exists
+const isSound = name => {
+  return sounds.some(sound => `!${sound.name}` === name)
+}
+
+// Return the sound mp3 path
+const getSoundPath = sound => {
+  return `./sounds/${sound.substr(1)}.mp3`
+}

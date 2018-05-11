@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const discord = require('discord.js')
 const bot = new discord.Client()
 let isReady = true
@@ -16,7 +18,7 @@ const sounds = [
 ]
 */
 
-bot.login('NDQ0NTQ1OTc1NTA4NTMzMjQ4.DddjZQ.OQPnvVlKez6-bhfA2BtPxWfrq5s')
+bot.login(process.env.DISCORD_TOKEN)
 
 bot.on('message', message => {
   if (message.content === '!philippe' && isReady) {

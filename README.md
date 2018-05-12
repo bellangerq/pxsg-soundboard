@@ -14,6 +14,10 @@ Another soundboard bot for Discord. But this one is the funniest.
 
 Just run `npm run start` to launch local app. The bot will login to Discord. Then you can type the different commands.
 
+Adding new sounds:
+- Add the `mp3` file into `/sounds`
+- Reference it into the `sounds` variable in `index.js`
+
 ## To do
 - [x] Create sounds array
 - [x] Create global function to play sound

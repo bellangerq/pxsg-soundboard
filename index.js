@@ -11,6 +11,9 @@ const sounds = [
   },
   {
     name: 'tagueule'
+  },
+  {
+    name: 'allerretour'
   }
 ]
 const formatedSounds = sounds.map(sound => {

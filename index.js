@@ -36,6 +36,10 @@ const commandsList = [
     value: 'Affiche la liste des sons jouables par le bot.'
   },
   {
+    name: '!nouveau',
+    value: 'Indique les indications pour soumettre un nouveau son.'
+  },
+  {
     name: '!aide',
     value: 'Affiche la liste des commandes disponibles.'
   }
@@ -44,7 +48,7 @@ const commandsList = [
 bot.on('message', message => {
 
   /*
-  ** !LIST COMMAND
+  ** !SONS COMMAND
   */
 
   if (message.content === '!sons') {
@@ -56,6 +60,22 @@ bot.on('message', message => {
     }})
   }
 
+  /*
+  ** !SONS COMMAND
+  */
+
+  if (message.content === '!nouveau') {
+    message.channel.send({embed: {
+      color: 0x950000,
+      title: 'Soumettre un nouveau son',
+      description: "Pour ajouter un son, envoyer le fichier `.mp3` avec le nom de la commande à entrer pour le jouer (exemple : `pxsg.mp3` qui sera jouer avec `!pxsg`)."
+    }})
+  }
+
+  /*
+  ** !AIDE COMMAND
+  */
+
   if (message.content === '!aide') {
     message.channel.send({embed: {
       color: 0x950000,
@@ -66,7 +86,7 @@ bot.on('message', message => {
   }
 
   /*
-  ** !SOUNDNAME COMMAND
+  ** !NOMDUSON COMMAND
   */
 
   if (!isSound(message.content)) {

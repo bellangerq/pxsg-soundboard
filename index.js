@@ -18,6 +18,10 @@ const sounds = [
   {
     name: 'nani'
   }
+  ,
+  {
+    name: 'ah'
+  }
 ]
 const formatedSounds = sounds.map(sound => {
   return {

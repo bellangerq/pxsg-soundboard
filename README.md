@@ -23,4 +23,5 @@ Adding new sounds:
 - [x] Create global function to play sound
 - [x] Create `!help` command
 - [x] Create `!list` command
-- [ ] Host on Heroku
+- [x] Host on Heroku
+- [ ] Create `sounds` variable depending on different sounds in `/sounds`

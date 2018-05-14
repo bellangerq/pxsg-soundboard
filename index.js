@@ -3,25 +3,14 @@ require('dotenv').config()
 const discord = require('discord.js')
 const bot = new discord.Client()
 const sounds = [
-  {
-    name: 'philippe',
-  },
-  {
-    name: 'nanananana',
-  },
-  {
-    name: 'tagueule'
-  },
-  {
-    name: 'allerretour'
-  },
-  {
-    name: 'nani'
-  }
-  ,
-  {
-    name: 'ah'
-  }
+  { name: 'philippe', },
+  { name: 'nanananana', },
+  { name: 'tagueule' },
+  { name: 'allerretour' },
+  { name: 'nani' },
+  { name: 'ah' },
+  { name: 'indeed' },
+  { name: 'viens' }
 ]
 const formatedSounds = sounds.map(sound => {
   return {

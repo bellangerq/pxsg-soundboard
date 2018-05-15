@@ -40,9 +40,17 @@ const commandsList = [
 ]
 
 bot.on('message', message => {
+  // Return if message's author is a bot
+  if (message.author.bot) return
+
   const typedCommand = message.content.substr(1)
 
   if (!isValidCommand(typedCommand)) {
+    message.channel.send({embed: {
+      color: 0x950000,
+      title: `La commande '!${typedCommand}' n'existe pas`,
+      description: "Entrer `!aide` pour afficher la liste des commandes disponibles."
+    }})
     console.log(`'!${typedCommand}' command doesnt exist.`)
     return
   }

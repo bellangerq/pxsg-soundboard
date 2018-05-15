@@ -4,26 +4,36 @@ Another soundboard bot for Discord. But this one is the funniest.
 
 ## Usage
 
+There are 4 available commands:
 - `!nomduson` to play a sound (*example: `!philippe`*).
-
+- `!aide`: display the help menu with all available commands.
 - `!sons`: display the list of the available sounds of the app.
-
-- `!aide`: display the help menu with all available commands
+- `!nouveau`: display how to add a new sound.
 
 ## Development
 
-Just run `npm run start` to launch local app. The bot will login to Discord. Then you can type the different commands.
+Install dependencies:
+```sh
+npm install
+```
 
-Adding new sounds:
-- Add the `mp3` file into `/sounds`
-- Reference it into the `sounds` variable in `index.js`
+Create a `.env` file at the root of your app with your Discord token:
+```sh
+DISCORD_TOKEN=YOUR_TOKEN_NUMBER
+```
 
-## To do
-- [x] Create sounds array
-- [x] Create global function to play sound
-- [x] Create `!help` command
-- [x] Create `!list` command
-- [x] Host on Heroku
-- [x] Create `sounds` variable depending on different sounds in `/sounds`
-- [x] Only display real people commands (filter bot messages)
-- [x] Add error message when command doesn't exist
+Run local server:
+```sh
+npm run start
+```
+
+Launch Discord and login into a voice channel of your server. You can then play with the different commands.
+
+Deploy to Heroku:
+```sh
+git push heroku master
+```
+
+## Add new sounds
+
+To add new sounds, just drop the `.mp3` files into the `/sounds` directory. The command name will be the same as the filename (`toto.mp3` would be played with `!toto`).

@@ -1,30 +1,23 @@
 require('dotenv').config()
-
 const discord = require('discord.js')
+const path = require('path')
+const fs = require('fs')
+
 const bot = new discord.Client()
-const sounds = [
-  { name: 'philippe', },
-  { name: 'nanananana', },
-  { name: 'tagueule' },
-  { name: 'allerretour' },
-  { name: 'nani' },
-  { name: 'ah' },
-  { name: 'indeed' },
-  { name: 'viens' },
-  { name: 'solidsnake' },
-  { name: 'eddymalou' },
-  { name: 'calotte' },
-  { name: 'money' },
-  { name: 'hadouken' },
-  { name: 'fermela' },
-  { name: 'nice' },
-  { name: 'leeroy' }
-]
-const formatedSounds = sounds.map(sound => {
-  return {
-    name: `> ${sound.name}`,
-    value: `- - -`
-  }
+const soundsPath = path.join(__dirname, 'sounds')
+const soundsList = []
+
+// Fill soundsList depending on whats inside /sounds
+fs.readdir(soundsPath, (err, files) => {
+  if (err) return console.log(`Unable to scan directory: ${err}`)
+
+  files.forEach(file => {
+    const fileName = file.split('.')[0]
+    soundsList.push({
+      name: fileName,
+      value: '- - -'
+    })
+  })
 })
 
 const commandsList = [
@@ -47,72 +40,79 @@ const commandsList = [
 ]
 
 bot.on('message', message => {
+  const typedCommand = message.content.substr(1)
+
+  if (!isValidCommand(typedCommand)) {
+    console.log(`'!${typedCommand}' command doesnt exist.`)
+    return
+  }
 
   /*
-  ** !SONS COMMAND
+  ** Handle `!sons` command
   */
 
-  if (message.content === '!sons') {
+  if (typedCommand === 'sons') {
     message.channel.send({embed: {
       color: 0x950000,
       title: 'Sons disponibles',
       description: "Voici la liste des sons disponibles. Pour les jouer, il suffit de tapper `!nomduson`.",
-      fields: formatedSounds
+      fields: soundsList
     }})
+    return
   }
 
   /*
-  ** !SONS COMMAND
+  ** Handle `!nouveau` command
   */
 
-  if (message.content === '!nouveau') {
+  if (typedCommand === 'nouveau') {
     message.channel.send({embed: {
       color: 0x950000,
       title: 'Soumettre un nouveau son',
       description: "Pour ajouter un son, envoyer le fichier `.mp3` avec le nom de la commande à entrer pour le jouer (exemple : `pxsg.mp3` qui sera jouer avec `!pxsg`)."
     }})
+    return
   }
 
   /*
-  ** !AIDE COMMAND
+  ** Handle `!aide` command
   */
 
-  if (message.content === '!aide') {
+  if (typedCommand === 'aide') {
     message.channel.send({embed: {
       color: 0x950000,
       title: "Besoin d'aide ?",
       description: "Voici la liste des commandes disponibles pour utiliser le bot!",
       fields: commandsList
     }})
+    return
   }
 
   /*
-  ** !NOMDUSON COMMAND
+  ** Play `!nomduson` command
   */
-
-  if (!isSound(message.content)) {
-    console.log(`'${message.content}' command doesnt exist.`)
-    return
-  }
 
   const voiceChannel = message.member.voiceChannel
   voiceChannel.join()
   .then(connection => {
-    const dispatcher = connection.playFile(getSoundPath(message.content))
+    const dispatcher = connection.playFile(getSoundPath(typedCommand))
     dispatcher.on('end', end => {
       voiceChannel.leave()
     })
-  })
+  }).catch(console.error)
 })
 
-// Check if the sound exists
-const isSound = name => {
-  return sounds.some(sound => `!${sound.name}` === name)
+// Check if command is valid
+const isValidCommand = command => {
+  return soundsList.some(sound => sound.name === command)
+  || command == 'aide'
+  || command == 'sons'
+  || command == 'nouveau'
 }
 
-// Return the sound mp3 path
+// Return the sound path
 const getSoundPath = sound => {
-  return `./sounds/${sound.substr(1)}.mp3`
+  return `./sounds/${sound}.mp3`
 }
 
 bot.login(process.env.DISCORD_TOKEN)

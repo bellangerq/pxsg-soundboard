@@ -24,4 +24,5 @@ Adding new sounds:
 - [x] Create `!help` command
 - [x] Create `!list` command
 - [x] Host on Heroku
-- [ ] Create `sounds` variable depending on different sounds in `/sounds`
+- [x] Create `sounds` variable depending on different sounds in `/sounds`
+- [ ] Only display real people commands (filter bot messages)

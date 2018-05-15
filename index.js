@@ -42,6 +42,7 @@ const commandsList = [
 bot.on('message', message => {
   // Return if message's author is a bot
   if (message.author.bot) return
+  if (message.content[0] !== '!') return
 
   const typedCommand = message.content.substr(1)
 

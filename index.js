@@ -2,6 +2,7 @@ require('dotenv').config()
 const discord = require('discord.js')
 const path = require('path')
 const fs = require('fs')
+const helpers = require('./helpers')
 
 const bot = new discord.Client()
 const soundsPath = path.join(__dirname, 'sounds')
@@ -46,7 +47,7 @@ bot.on('message', message => {
 
   const typedCommand = message.content.substr(1)
 
-  if (!isValidCommand(typedCommand)) {
+  if (!helpers.isValidCommand(soundsList, typedCommand)) {
     message.channel.send({embed: {
       color: 0x950000,
       title: `La commande '!${typedCommand}' n'existe pas`,
@@ -104,24 +105,11 @@ bot.on('message', message => {
   const voiceChannel = message.member.voiceChannel
   voiceChannel.join()
   .then(connection => {
-    const dispatcher = connection.playFile(getSoundPath(typedCommand))
+    const dispatcher = connection.playFile(helpers.getSoundPath(typedCommand))
     dispatcher.on('end', end => {
       voiceChannel.leave()
     })
   }).catch(console.error)
 })
-
-// Check if command is valid
-const isValidCommand = command => {
-  return soundsList.some(sound => sound.name === command)
-  || command == 'aide'
-  || command == 'sons'
-  || command == 'nouveau'
-}
-
-// Return the sound path
-const getSoundPath = sound => {
-  return `./sounds/${sound}.mp3`
-}
 
 bot.login(process.env.DISCORD_TOKEN)

@@ -31,8 +31,7 @@ Launch Discord and login into a voice channel of your server. You can then play 
 
 Add ffmpeg to your buildpacks list:
 ```sh
-heroku buildpacks:add https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
-
+heroku buildpacks:add https://github.com/kitcast/buildpack-ffmpeg.git
 ```
 
 Deploy to Heroku:

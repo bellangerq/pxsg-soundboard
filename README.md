@@ -29,6 +29,12 @@ npm run start
 
 Launch Discord and login into a voice channel of your server. You can then play with the different commands.
 
+Add ffmpeg to your buildpacks list:
+```sh
+heroku buildpacks:add https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git
+
+```
+
 Deploy to Heroku:
 ```sh
 git push heroku master

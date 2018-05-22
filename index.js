@@ -90,6 +90,18 @@ const sendMessage = (message, commandsList) => {
   }})
 }
 
+// Play sound file
+const playSound = (message, command) => {
+  const voiceChannel = message.member.voiceChannel
+  return voiceChannel.join()
+  .then(connection => {
+    const dispatcher = connection.playFile(getSoundPath(command))
+    dispatcher.on('end', end => {
+      voiceChannel.leave()
+    })
+  }).catch(console.error)
+}
+
 const bot = new discord.Client()
 
 bot.on('message', message => {
@@ -115,14 +127,7 @@ bot.on('message', message => {
   }
 
   // Play sound
-  const voiceChannel = message.member.voiceChannel
-  voiceChannel.join()
-  .then(connection => {
-    const dispatcher = connection.playFile(getSoundPath(command))
-    dispatcher.on('end', end => {
-      voiceChannel.leave()
-    })
-  }).catch(console.error)
+  playSound(message, command)
 })
 
 bot.login(process.env.DISCORD_TOKEN)

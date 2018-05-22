@@ -42,3 +42,9 @@ git push heroku master
 ## Add new sounds
 
 To add new sounds, just drop the `.mp3` files into the `/sounds` directory. The command name will be the same as the filename (`toto.mp3` would be played with `!toto`).
+
+## To do
+
+- [ ] Refactor playSound code
+- [ ] Export variables from main file
+- [ ] Handle helper & error cases in `sendMessage` function

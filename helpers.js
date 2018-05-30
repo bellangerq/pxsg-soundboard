@@ -3,11 +3,11 @@ export const isNotValidMessage = (message) => {
 }
 
 export const isNotSoundCommand = (command, sounds) => {
-  return !sounds.some(sound => sound.name === command)
+  return !sounds.includes(command)
 }
 
 export const isHelperCommand = (command) => {
-  return command == 'aide' || command == 'nouveau' || command == 'sons'
+  return ['aide', 'nouveau', 'sons'].includes(command)
 }
 
 export const getCommand = message => {

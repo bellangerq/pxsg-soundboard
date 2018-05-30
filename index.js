@@ -12,9 +12,9 @@ const discord = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 
-// Create soundsList based on what's inside /sounds
+// Create sounds based on what's inside /sounds
 const soundsPath = path.join(__dirname, 'sounds')
-const soundsList = []
+const sounds = []
 
 // Scan directory to build sounds list
 fs.readdir(soundsPath, (err, files) => {
@@ -22,10 +22,7 @@ fs.readdir(soundsPath, (err, files) => {
 
   files.forEach(file => {
     const fileName = file.split('.')[0]
-    soundsList.push({
-      name: fileName,
-      value: '- - -'
-    })
+    sounds.push(fileName)
   })
 })
 
@@ -53,8 +50,7 @@ const commands = [
     name: 'sons',
     color: 0x950000,
     title: 'Sons disponibles',
-    description: "Voici la liste des sons disponibles. Pour les jouer, il suffit de tapper `!nomduson`.",
-    fields: soundsList
+    description: "La liste des sons est disponible ici : https://bit.ly/2LFH1b0"
   },
   {
     name: 'aide',
@@ -117,7 +113,7 @@ bot.on('message', message => {
   }
 
   // Show error message
-  if (isNotSoundCommand(command, soundsList)) {
+  if (isNotSoundCommand(command, sounds)) {
     message.channel.send({embed: {
       color: 0x950000,
       title: `La commande '!${command}' n'existe pas`,

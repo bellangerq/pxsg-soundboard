@@ -4,7 +4,9 @@
   "description": "Another soundboard for Discord. But this one is the funniest.",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node index.js --presets es2015"
+    "clean": "rm -rf dist && mkdir dist",
+    "build": "npm run clean && npx babel src --out-dir dist",
+    "start": "npm run build && node ./dist/index.js"
   },
   "engines": {
     "node": "9.3.0"
@@ -13,6 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.1.0",
+    "babel-preset-env": "^1.7.0",
     "discord.js": "^12.0.2",
     "dotenv": "^5.0.1"
   },

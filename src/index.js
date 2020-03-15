@@ -13,12 +13,12 @@ const fs = require('fs')
 const path = require('path')
 
 // Create sounds based on what's inside /sounds
-const soundsPath = path.join(__dirname, 'sounds')
+const soundsPath = path.join(__dirname, '../sounds')
 const sounds = []
 
 // Scan directory to build sounds list
 fs.readdir(soundsPath, (err, files) => {
-  if (err) return console.log(`Unable to scan directory: ${err}`)
+  if (err) return console.error(`Unable to scan directory: ${err}`)
 
   files.forEach(file => {
     const fileName = file.split('.')[0]

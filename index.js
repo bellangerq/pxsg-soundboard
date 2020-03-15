@@ -88,11 +88,11 @@ const sendMessage = (message, commandsList) => {
 
 // Play sound file
 const playSound = (message, command) => {
-  const voiceChannel = message.member.voiceChannel
+  const voiceChannel = message.member.voice.channel
   return voiceChannel.join()
   .then(connection => {
-    const dispatcher = connection.playFile(getSoundPath(command))
-    dispatcher.on('end', end => {
+    const dispatcher = connection.play(getSoundPath(command))
+    dispatcher.on('finish', end => {
       voiceChannel.leave()
     })
   }).catch(console.error)

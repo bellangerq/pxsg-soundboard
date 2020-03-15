@@ -12,9 +12,9 @@
   "author": "Quentin Bellanger",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.3.2",
-    "dotenv": "^5.0.1",
-    "node-opus": "^0.3.0"
+    "@discordjs/opus": "^0.1.0",
+    "discord.js": "^12.0.2",
+    "dotenv": "^5.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

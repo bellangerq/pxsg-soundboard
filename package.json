@@ -9,7 +9,7 @@
     "start": "npm run build && node ./dist/index.js"
   },
   "engines": {
-    "node": "9.3.0"
+    "node": "12.16.1"
   },
   "author": "Quentin Bellanger",
   "license": "MIT",

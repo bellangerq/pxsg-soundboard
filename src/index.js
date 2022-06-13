@@ -1,129 +1,67 @@
-// Imports & requires
-import {
+const { Client, Intents } = require('discord.js')
+
+const {
   isNotValidMessage,
   isNotSoundCommand,
-  getCommand,
   isHelperCommand,
-  getSoundPath
-} from './helpers.js'
+  buildSoundsList
+} = require('./helpers.js')
+const { helpCommands } = require('./commands.js')
 
 require('dotenv').config()
-const discord = require('discord.js')
-const fs = require('fs')
-const path = require('path')
 
-// Create sounds based on what's inside /sounds
-const soundsPath = path.join(__dirname, '../sounds')
-const sounds = []
+const client = new Client({
+  intents: [
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.DIRECT_MESSAGES,
+    Intents.FLAGS.GUILD_VOICE_STATES
+  ]
+})
+const token = process.env.DISCORD_TOKEN
+client.login(token)
 
-// Scan directory to build sounds list
-fs.readdir(soundsPath, (err, files) => {
-  if (err) return console.error(`Unable to scan directory: ${err}`)
-
-  files.forEach(file => {
-    const fileName = file.split('.')[0]
-    sounds.push(fileName)
-  })
+// Init bot
+let sounds = []
+client.once('ready', async () => {
+  sounds = await buildSoundsList()
+  console.log('Bot ready!')
 })
 
-const helpCommands = [
-  {
-    name: '!nomduson',
-    value: 'Joue le son sélectionné. Par exemple : `!philippe`.'
-  },
-  {
-    name: '!sons',
-    value: 'Affiche la liste des sons jouables par le bot.'
-  },
-  {
-    name: '!nouveau',
-    value: 'Indique les indications pour soumettre un nouveau son.'
-  },
-  {
-    name: '!aide',
-    value: 'Affiche la liste des commandes disponibles.'
-  }
-]
+// Listen for new messages
+client.on('messageCreate', (message) => {
+  console.log(message.content)
 
-const commands = [
-  {
-    name: 'sons',
-    color: 0x950000,
-    title: 'Sons disponibles',
-    description: "La liste des sons est disponible ici : https://bit.ly/2LFH1b0"
-  },
-  {
-    name: 'aide',
-    color: 0x950000,
-    title: "Besoin d'aide ?",
-    description: "Voici la liste des commandes disponibles pour utiliser le bot!",
-    fields: helpCommands
-  },
-  {
-    name: 'nouveau',
-    color: 0x950000,
-    title: 'Soumettre un nouveau son',
-    description: "Pour ajouter un son, envoyer le fichier `.mp3` avec le nom de la commande à entrer pour le jouer (exemple : `pxsg.mp3` qui sera jouer avec `!pxsg`)."
-  },
-  {
-    name: 'erreur',
-    color: 0x950000,
-    title: `Commande inexistante`,
-    description: "Entrer `!aide` pour afficher la liste des commandes disponibles."
-  }
-]
+  // Ignore message
+  if (!message.channel.isVoice() || isNotValidMessage(message)) return
 
-// Send bot text message
-const sendMessage = (message, commandsList) => {
-  const command = commandsList.find(command => {
-    return command.name == getCommand(message)
-  })
-  message.channel.send({embed: {
-    color: command.color,
-    title: command.title,
-    description: command.description,
-    fields: command.fields || []
-  }})
-}
+  const command = message.content.substring(1)
 
-// Play sound file
-const playSound = (message, command) => {
-  const voiceChannel = message.member.voice.channel
-  return voiceChannel.join()
-  .then(connection => {
-    const dispatcher = connection.play(getSoundPath(command))
-    dispatcher.on('finish', end => {
-      voiceChannel.leave()
-    })
-  }).catch(console.error)
-}
-
-const bot = new discord.Client()
-
-bot.on('message', message => {
-  // Do nothing
-  if (isNotValidMessage(message)) return
-
-  // Show bot message
-  const command = getCommand(message)
-
+  // Show help embed
   if (isHelperCommand(command)) {
-    sendMessage(message, commands)
-    return
+    const embedHelpMessage = {
+      title: 'Besoin d’aide ?',
+      color: 0x950000,
+      description:
+        'Voici la liste des commandes disponibles pour utiliser le bot!',
+      fields: helpCommands
+    }
+
+    return message.channel.send({ embeds: [embedHelpMessage] })
   }
 
-  // Show error message
+  // Show invalid sound embed
   if (isNotSoundCommand(command, sounds)) {
-    message.channel.send({embed: {
+    const embedInvalidSoundMessage = {
+      title: 'Ce son n’existe pas',
       color: 0x950000,
-      title: `La commande '!${command}' n'existe pas`,
-      description: "Entrer `!aide` pour afficher la liste des commandes disponibles."
-    }})
-    return
+      description:
+        'La liste des sons est disponible ici : https://bit.ly/2LFH1b0'
+    }
+
+    return message.channel.send({ embeds: [embedInvalidSoundMessage] })
   }
 
   // Play sound
-  playSound(message, command)
+  console.log('Valid message: play sound!')
 })
-
-bot.login(process.env.DISCORD_TOKEN)
